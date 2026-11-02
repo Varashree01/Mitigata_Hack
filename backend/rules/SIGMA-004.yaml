@@ -1,0 +1,20 @@
+id: SIGMA-004
+title: LSASS Memory Credential Dumping Attempt
+severity: critical
+description: Detects attempts to access LSASS process memory using procdump, mimikatz,
+  or comsvcs.dll.
+tags:
+- attack.credential_access
+- attack.t1003
+technique_id: T1003
+logsource:
+  category: process_creation
+detection:
+  selection:
+    command_line|contains:
+    - procdump
+    - lsass
+    - sekurlsa
+    - minidump
+    - comsvcs.dll
+  condition: selection

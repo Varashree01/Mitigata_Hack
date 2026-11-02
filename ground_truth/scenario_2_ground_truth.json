@@ -1,0 +1,37 @@
+{
+  "scenario_id": "SCENARIO-02",
+  "name": "Phishing Ingress & C2 Beaconing",
+  "incident_id": "INC-02",
+  "initial_compromised_host": "WS-FIN-12",
+  "initial_user": "r_hendricks",
+  "compromised_hosts": [
+    "WS-FIN-12"
+  ],
+  "target_assets": [],
+  "steps": [
+    {
+      "step": 1,
+      "technique_id": "T1059.001",
+      "kill_chain_stage": "Exploitation",
+      "host": "WS-FIN-12",
+      "user": "r_hendricks",
+      "event_ids": [
+        "sc2-ps-bypass"
+      ],
+      "description": "Suspicious encoded PowerShell download cradle executed"
+    },
+    {
+      "step": 2,
+      "technique_id": "T1071.001",
+      "kill_chain_stage": "Command and Control",
+      "host": "WS-FIN-12",
+      "user": "r_hendricks",
+      "event_ids": [
+        "sc2-c2-beacon"
+      ],
+      "description": "Outbound Command and Control beaconing established on port 4444"
+    }
+  ],
+  "total_attack_steps": 2,
+  "total_attack_events": 2
+}

@@ -1,0 +1,39 @@
+{
+  "scenario_id": "SCENARIO-03",
+  "name": "Active Directory DC Kerberoast & Pivot",
+  "incident_id": "INC-03",
+  "initial_compromised_host": "WS-ENG-04",
+  "initial_user": "svc_backup",
+  "compromised_hosts": [
+    "WS-ENG-04"
+  ],
+  "target_assets": [
+    "DC-01"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "technique_id": "T1082",
+      "kill_chain_stage": "Reconnaissance",
+      "host": "WS-ENG-04",
+      "user": "svc_backup",
+      "event_ids": [
+        "sc3-nltest-dc"
+      ],
+      "description": "Domain controller discovery"
+    },
+    {
+      "step": 2,
+      "technique_id": "T1021.002",
+      "kill_chain_stage": "Installation",
+      "host": "DC-01",
+      "user": "svc_backup",
+      "event_ids": [
+        "sc3-smb-dc"
+      ],
+      "description": "Lateral administrative connection attempt to Primary Domain Controller"
+    }
+  ],
+  "total_attack_steps": 2,
+  "total_attack_events": 2
+}

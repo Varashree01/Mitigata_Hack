@@ -1,0 +1,77 @@
+{
+  "scenario_id": "SCENARIO-01",
+  "name": "INC-01 Retail Vendor Lateral Exfiltration",
+  "incident_id": "INC-01",
+  "initial_compromised_host": "HR-07",
+  "initial_user": "v_jallen",
+  "compromised_hosts": [
+    "HR-07",
+    "FS-02"
+  ],
+  "target_assets": [
+    "FS-02"
+  ],
+  "steps": [
+    {
+      "step": 1,
+      "technique_id": "T1110.001",
+      "kill_chain_stage": "Delivery",
+      "host": "HR-07",
+      "user": "v_jallen",
+      "event_ids": [
+        "sc1-spray-0",
+        "sc1-spray-1",
+        "sc1-spray-2",
+        "sc1-spray-3",
+        "sc1-succ-login"
+      ],
+      "description": "Password guessing followed by successful logon on HR-07"
+    },
+    {
+      "step": 2,
+      "technique_id": "T1082",
+      "kill_chain_stage": "Reconnaissance",
+      "host": "HR-07",
+      "user": "v_jallen",
+      "event_ids": [
+        "sc1-recon-whoami"
+      ],
+      "description": "System Information and privilege discovery"
+    },
+    {
+      "step": 3,
+      "technique_id": "T1003",
+      "kill_chain_stage": "Exploitation",
+      "host": "HR-07",
+      "user": "v_jallen",
+      "event_ids": [
+        "sc1-cred-dump"
+      ],
+      "description": "LSASS memory credential dumping to acquire domain hashes"
+    },
+    {
+      "step": 4,
+      "technique_id": "T1021.002",
+      "kill_chain_stage": "Installation",
+      "host": "FS-02",
+      "user": "v_jallen",
+      "event_ids": [
+        "sc1-lateral-smb"
+      ],
+      "description": "Lateral movement from HR-07 to FS-02 using administrative SMB share"
+    },
+    {
+      "step": 5,
+      "technique_id": "T1567",
+      "kill_chain_stage": "Actions on Objectives",
+      "host": "FS-02",
+      "user": "v_jallen",
+      "event_ids": [
+        "sc1-exfil-web"
+      ],
+      "description": "Archive exfiltration of sensitive records to external cloud endpoint"
+    }
+  ],
+  "total_attack_steps": 5,
+  "total_attack_events": 9
+}

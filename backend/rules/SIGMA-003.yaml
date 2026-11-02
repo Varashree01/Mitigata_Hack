@@ -1,0 +1,27 @@
+id: SIGMA-003
+title: System and Account Enumeration Discovery
+severity: medium
+description: Detects reconnaissance utilities executed to discover users, domain controllers,
+  and host configs.
+tags:
+- attack.discovery
+- attack.t1082
+- attack.t1087
+technique_id: T1082
+logsource:
+  category: process_creation
+detection:
+  selection:
+    process_name:
+    - whoami.exe
+    - net.exe
+    - net1.exe
+    - nltest.exe
+    - systeminfo.exe
+    - ipconfig.exe
+    command_line|contains:
+    - /domain
+    - user
+    - group
+    - all
+  condition: selection

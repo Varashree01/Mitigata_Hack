@@ -1,0 +1,21 @@
+id: SIGMA-006
+title: Command and Control Outbound Beaconing
+severity: high
+description: Detects recurring outbound connections to suspicious external C2 IP addresses.
+tags:
+- attack.command_and_control
+- attack.t1071.001
+technique_id: T1071.001
+logsource:
+  category: network_connection
+detection:
+  selection:
+    destination_port:
+    - 4444
+    - 8080
+    - 8443
+    - 9001
+    action:
+    - network_connected
+    - beacon
+  condition: selection

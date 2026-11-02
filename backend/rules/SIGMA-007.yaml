@@ -1,0 +1,25 @@
+id: SIGMA-007
+title: Suspicious Data Exfiltration to External Endpoint
+severity: critical
+description: Detects high volume archive uploads or anomalous file staging to external
+  web endpoints.
+tags:
+- attack.exfiltration
+- attack.t1567
+technique_id: T1567
+logsource:
+  category: file_access
+detection:
+  selection:
+    action:
+    - data_upload
+    - archive_exfil
+    - file_transferred
+    command_line|contains:
+    - rclone
+    - curl
+    - mega.nz
+    - dropbox
+    - s3
+    - 7z
+  condition: selection

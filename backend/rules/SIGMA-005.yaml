@@ -1,0 +1,22 @@
+id: SIGMA-005
+title: Lateral Movement via SMB and Admin Shares
+severity: high
+description: Detects suspicious remote service execution or administrative share access
+  across hosts.
+tags:
+- attack.lateral_movement
+- attack.t1021.002
+technique_id: T1021.002
+logsource:
+  category: network_connection
+detection:
+  selection:
+    destination_port:
+    - 445
+    - 139
+    - 135
+    action:
+    - network_connected
+    - share_accessed
+    - remote_ipc
+  condition: selection

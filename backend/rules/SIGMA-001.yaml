@@ -1,0 +1,23 @@
+id: SIGMA-001
+title: Authentication Brute Force Guessing
+severity: high
+description: Detects high-frequency failed authentications on an account within a
+  short temporal window.
+tags:
+- attack.credential_access
+- attack.t1110.001
+technique_id: T1110.001
+logsource:
+  category: authentication
+detection:
+  selection:
+    action:
+    - logon_failed
+    - authentication_failure
+  condition: selection
+  threshold:
+    count: 3
+    timeframe: 60
+    by:
+    - user
+    - source_ip
