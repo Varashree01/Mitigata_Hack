@@ -34,43 +34,38 @@ export const Sidebar: React.FC<SidebarProps> = ({
 }) => {
   const groups: NavGroup[] = [
     {
-      groupName: 'OVERVIEW',
+      groupName: 'MONITOR',
       items: [
-        { id: 'dashboard', label: 'Command Center', icon: LayoutDashboard },
-      ],
-    },
-    {
-      groupName: 'INVESTIGATION',
-      items: [
-        { id: 'livestream', label: 'Live Event Stream', icon: Radio },
-        { id: 'investigation', label: 'Attack Graph', icon: GitBranch },
+        { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
         { id: 'incidents', label: 'Incidents', icon: ShieldAlert, badge: activeIncidentsCount },
       ],
     },
     {
-      groupName: 'EXPOSURE INTELLIGENCE',
+      groupName: 'RESPOND',
       items: [
-        { id: 'exposure', label: 'Forward Reachability', icon: Crosshair },
+        { id: 'investigation', label: 'Attack paths', icon: GitBranch },
+        { id: 'exposure', label: 'Fixes', icon: Crosshair },
       ],
     },
     {
-      groupName: 'DATA MANAGEMENT',
+      groupName: 'TRUST',
       items: [
-        { id: 'ingestion', label: 'Data Ingestion', icon: Database },
-        { id: 'telemetry', label: 'Telemetry Coverage', icon: Radar },
+        { id: 'evaluation', label: 'Accuracy', icon: Cpu },
+        { id: 'validation', label: 'Rules', icon: CheckSquare },
       ],
     },
     {
-      groupName: 'DETECTION',
+      groupName: 'DATA',
       items: [
-        { id: 'validation', label: 'Rule Validation Lab', icon: CheckSquare },
+        { id: 'livestream', label: 'Live demo', icon: Radio },
+        { id: 'ingestion', label: 'Data logs', icon: Database },
+        { id: 'telemetry', label: 'Performance', icon: Radar },
       ],
     },
     {
       groupName: 'ANALYSIS',
       items: [
-        { id: 'reports', label: 'Forensic Reports', icon: FileText },
-        { id: 'evaluation', label: 'Benchmarks & Evaluation', icon: Cpu },
+        { id: 'reports', label: 'Reports', icon: FileText },
       ],
     },
     {
