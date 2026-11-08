@@ -8,6 +8,7 @@ import {
 interface SidebarProps {
   currentTab: string;
   onSelectTab: (tab: string) => void;
+  onRunDemo: () => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
   activeIncidentsCount: number;
@@ -28,6 +29,7 @@ interface NavGroup {
 export const Sidebar: React.FC<SidebarProps> = ({
   currentTab,
   onSelectTab,
+  onRunDemo,
   collapsed,
   onToggleCollapse,
   activeIncidentsCount,
@@ -152,7 +154,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 return (
                   <button
                     key={item.id}
-                    onClick={() => onSelectTab(item.id === 'incidents' ? 'dashboard' : item.id)}
+                    onClick={() => {
+                      if (item.id === 'livestream') {
+                        onRunDemo();
+                      }
+                      onSelectTab(item.id === 'incidents' ? 'investigation' : item.id);
+                    }}
                     title={collapsed ? item.label : undefined}
                     style={{
                       width: '100%',

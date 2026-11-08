@@ -86,6 +86,7 @@ export function App() {
       <Sidebar
         currentTab={currentTab}
         onSelectTab={setCurrentTab}
+        onRunDemo={handleStartSim}
         collapsed={collapsed}
         onToggleCollapse={() => setCollapsed(!collapsed)}
         activeIncidentsCount={activeIncidentsCount}
