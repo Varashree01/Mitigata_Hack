@@ -300,7 +300,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate }) =
       }}>
         {/* Table Header Bar */}
         <div style={{
-          padding: 'var(--space-4) var(--space-5)',
+          padding: '12px var(--space-4)',
           borderBottom: '1px solid var(--border)',
           display: 'flex',
           justifyContent: 'space-between',
@@ -308,9 +308,9 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate }) =
           gap: 'var(--space-3)',
           flexWrap: 'wrap',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)' }}>
-            <ShieldAlert size={18} color="var(--accent)" />
-            <h2 className="panel-title">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)', minWidth: 0 }}>
+            <ShieldAlert size={16} color="var(--accent)" />
+            <h2 className="panel-title" style={{ fontSize: '14px', whiteSpace: 'nowrap' }}>
               Prioritized Reconstructed Incidents
             </h2>
             <span style={{
@@ -319,14 +319,14 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate }) =
               backgroundColor: 'var(--surface-subtle)',
               border: '1px solid var(--border)',
               color: 'var(--text-secondary)',
-              padding: '1px 8px',
+              padding: '2px 6px',
               borderRadius: 'var(--radius-xs)',
             }}>
               {incidents.length} Active
             </span>
           </div>
 
-          <div className="helper-text">
+          <div className="helper-text" style={{ fontSize: '11px', whiteSpace: 'nowrap' }}>
             Ranked by Explainable Multi-Factor Risk Score (0 - 100)
           </div>
         </div>
@@ -350,7 +350,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate }) =
           </div>
         ) : (
           <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <table style={{ width: '100%', minWidth: '1040px', borderCollapse: 'collapse', textAlign: 'left' }}>
               <thead>
                 <tr style={{
                   backgroundColor: 'var(--surface-subtle)',
