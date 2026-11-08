@@ -3,6 +3,7 @@ import sqlite3
 import json
 import psutil
 import time
+import threading
 from typing import List, Dict, Any, Optional
 from pathlib import Path
 from datetime import datetime
@@ -28,6 +29,7 @@ class StorageManager:
         self._create_sqlite_tables()
 
         # 2. Initialize DuckDB for analytical column queries & streaming log batches
+        self._duck_lock = threading.Lock()
         self.duck_conn = duckdb.connect(str(DUCKDB_PATH))
         self._create_duckdb_tables()
 
@@ -158,9 +160,10 @@ class StorageManager:
             )
             for e in events
         ]
-        self.duck_conn.executemany("""
-            INSERT OR REPLACE INTO events VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, rows)
+        with self._duck_lock:
+            self.duck_conn.executemany("""
+                INSERT OR REPLACE INTO events VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """, rows)
         self.total_processed += len(events)
         self._update_eps()
 
@@ -185,7 +188,8 @@ class StorageManager:
         query += " ORDER BY timestamp DESC LIMIT ? OFFSET ?"
         params.extend([limit, offset])
 
-        res = self.duck_conn.execute(query, params).fetchall()
+        with self._duck_lock:
+            res = self.duck_conn.execute(query, params).fetchall()
         cols = [
             "event_id", "timestamp", "ingestion_timestamp", "source", "source_type",
             "host", "user", "source_ip", "destination_ip", "source_port",
@@ -203,7 +207,8 @@ class StorageManager:
         return out
 
     def get_event_by_id(self, event_id: str) -> Optional[Dict[str, Any]]:
-        res = self.duck_conn.execute("SELECT * FROM events WHERE event_id = ?", [event_id]).fetchone()
+        with self._duck_lock:
+            res = self.duck_conn.execute("SELECT * FROM events WHERE event_id = ?", [event_id]).fetchone()
         if not res:
             return None
         cols = [
@@ -340,8 +345,9 @@ class StorageManager:
         cur.execute("SELECT COUNT(*) FROM incidents WHERE severity = 'critical' AND status = 'active'")
         critical_incidents = cur.fetchone()[0]
 
-        duck_hosts = self.duck_conn.execute("SELECT COUNT(DISTINCT host) FROM events WHERE host IS NOT NULL").fetchone()[0]
-        duck_users = self.duck_conn.execute("SELECT COUNT(DISTINCT user) FROM events WHERE user IS NOT NULL").fetchone()[0]
+        with self._duck_lock:
+            duck_hosts = self.duck_conn.execute("SELECT COUNT(DISTINCT host) FROM events WHERE host IS NOT NULL").fetchone()[0]
+            duck_users = self.duck_conn.execute("SELECT COUNT(DISTINCT user) FROM events WHERE user IS NOT NULL").fetchone()[0]
 
         cpu_p = psutil.cpu_percent(interval=None)
         mem_p = psutil.virtual_memory().percent
@@ -370,7 +376,8 @@ class StorageManager:
             self.sqlite_conn.execute("DELETE FROM detections")
             self.sqlite_conn.execute("DELETE FROM relationships")
             self.sqlite_conn.execute("DELETE FROM ingestion_runs")
-        self.duck_conn.execute("DELETE FROM events")
+        with self._duck_lock:
+            self.duck_conn.execute("DELETE FROM events")
         self.total_received = 0
         self.total_processed = 0
         self.total_dropped = 0
