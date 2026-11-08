@@ -2,7 +2,6 @@
 
 ### Kill Chain Intelligence for evidence-backed attack reconstruction
 
-> Tracx is a cybersecurity investigation platform that turns security logs into explainable incidents, reconstructed attack paths, and forward-reachability insights.
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=111827)](https://react.dev/)
