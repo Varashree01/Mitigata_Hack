@@ -120,7 +120,6 @@ export function App() {
         }}>
           {(currentTab === 'dashboard' || currentTab === 'incidents') && (
             <CommandCenter
-              onInvestigate={handleInvestigateIncident}
               onRunDemo={handleStartSim}
               onAnalyzeLogs={() => setCurrentTab('ingestion')}
               simStatus={simStatus}
