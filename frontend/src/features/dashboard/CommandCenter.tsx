@@ -9,9 +9,12 @@ import { api } from '../../services/api';
 
 interface CommandCenterProps {
   onInvestigate: (incidentId: string) => void;
+  onRunDemo: () => void;
+  onAnalyzeLogs: () => void;
+  simStatus: string;
 }
 
-export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate }) => {
+export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate, onRunDemo, onAnalyzeLogs, simStatus }) => {
   const [telemetry, setTelemetry] = useState<SystemTelemetry | null>(null);
   const [incidents, setIncidents] = useState<IncidentRecord[]>([]);
   const [detections, setDetections] = useState<DetectionRecord[]>([]);
@@ -91,10 +94,10 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate }) =
       }}>
         <div>
           <h1 className="page-title">
-            Command Center
+            Overview
           </h1>
           <p className="helper-text" style={{ marginTop: 'var(--space-1)' }}>
-            Real-time pipeline telemetry, threat detections, and multi-host incident correlation.
+            Review the latest processing run or start an analysis workflow.
           </p>
         </div>
 
@@ -124,6 +127,46 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({ onInvestigate }) =
             <span>Refresh</span>
           </button>
         </div>
+      </div>
+
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+        gap: 'var(--space-4)',
+      }}>
+        <button onClick={onRunDemo} disabled={simStatus === 'running'} style={{
+          textAlign: 'left',
+          border: '1px solid var(--accent-border)',
+          borderRadius: 'var(--radius-md)',
+          background: 'var(--accent-subtle)',
+          color: 'var(--text-primary)',
+          padding: '16px 18px',
+          cursor: simStatus === 'running' ? 'not-allowed' : 'pointer',
+          opacity: simStatus === 'running' ? 0.7 : 1,
+        }}>
+          <div style={{ fontSize: '14px', fontWeight: 650, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Zap size={16} color="var(--accent)" /> Run live demo
+          </div>
+          <div className="helper-text" style={{ marginTop: 4 }}>
+            {simStatus === 'running' ? 'Simulation is running' : 'Load the included scenario and reconstruct an attack path.'}
+          </div>
+        </button>
+        <button onClick={onAnalyzeLogs} style={{
+          textAlign: 'left',
+          border: '1px solid var(--border)',
+          borderRadius: 'var(--radius-md)',
+          background: 'var(--surface)',
+          color: 'var(--text-primary)',
+          padding: '16px 18px',
+          cursor: 'pointer',
+        }}>
+          <div style={{ fontSize: '14px', fontWeight: 650, display: 'flex', alignItems: 'center', gap: 8 }}>
+            <Database size={16} color="var(--accent)" /> Analyze a data log
+          </div>
+          <div className="helper-text" style={{ marginTop: 4 }}>
+            Upload CSV, JSON, JSONL, Sysmon, or syslog data for analysis.
+          </div>
+        </button>
       </div>
 
       {/* Standardized KPI Metric Strip (Compact 6-Card Grid) */}

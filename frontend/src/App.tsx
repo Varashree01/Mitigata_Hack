@@ -119,7 +119,12 @@ export function App() {
           backgroundColor: 'var(--app-bg)',
         }}>
           {(currentTab === 'dashboard' || currentTab === 'incidents') && (
-            <CommandCenter onInvestigate={handleInvestigateIncident} />
+            <CommandCenter
+              onInvestigate={handleInvestigateIncident}
+              onRunDemo={handleStartSim}
+              onAnalyzeLogs={() => setCurrentTab('ingestion')}
+              simStatus={simStatus}
+            />
           )}
           {currentTab === 'livestream' && (
             <LiveStreamView />
