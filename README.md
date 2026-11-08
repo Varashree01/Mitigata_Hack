@@ -18,11 +18,22 @@ It answers three operational questions:
 2. **What did the attacker do, and how did they move?**
 3. **What could the attacker reach next?**
 
-## Live product preview
+## Product preview
 
-The screenshot below was captured from the running frontend with the FastAPI backend and simulation engine connected:
+The current frontend keeps the analyst workflow compact: start with a generated live demo or upload a data log, then review correlated incidents and reconstructed attack paths.
 
-![Tracx Command Center running](Docs/tracx-command-center.png)
+<table>
+  <tr>
+    <td><img src="Docs/tracx-overview.png" alt="Tracx Overview with live demo and log analysis actions"></td>
+    <td><img src="Docs/tracx-incidents.png" alt="Tracx incident investigation view"></td>
+    <td><img src="Docs/tracx-attack-paths.png" alt="Tracx attack paths view"></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Overview</strong></td>
+    <td align="center"><strong>Incidents</strong></td>
+    <td align="center"><strong>Attack paths</strong></td>
+  </tr>
+</table>
 
 ## Why Tracx
 
@@ -35,19 +46,59 @@ The screenshot below was captured from the running frontend with the FastAPI bac
 ## Architecture
 
 ```mermaid
-flowchart LR
-    Logs[Raw telemetry] --> Ingest[Streaming parser\n+ normalizer]
-    Ingest --> Store[(DuckDB + Parquet)]
-    Ingest --> Detect[Sigma detection engine]
-    Detect --> Map[MITRE ATT&CK + Kill Chain]
-    Map --> Correlate[Entity resolution\n+ temporal correlation]
-    Correlate --> Graph[Attack graph + evidence]
-    Correlate --> Exposure[Forward reachability]
-    Store --> API[FastAPI]
-    Graph --> API
-    Exposure --> API
-    API --> UI[React + TypeScript\n+ Vite analyst console]
+flowchart TB
+    subgraph INPUTS["INPUTS"]
+        Logs["Raw log files<br/>CSV · JSON · JSONL · Sysmon"]
+        Rules["Rules (YAML)<br/>Sigma + ATT&CK mapping"]
+        Config["Config<br/>assets · links · fields"]
+    end
+
+    subgraph ENGINE["ENGINE · own process"]
+        Ingest["01 Ingest<br/>streaming parse · normalize · quality checks"]
+        Detect["02 Detect + label<br/>YAML rules → detections + signals"]
+        Correlate["03 Correlate<br/>typed entity links · temporal windows"]
+        Graph["04 Graph<br/>attack paths · reachability · chokepoints"]
+        Enrich["05 Enrich<br/>risk score · incident report"]
+        Ingest -->|events| Detect -->|alerts| Correlate -->|incidents| Graph -->|paths| Enrich
+    end
+
+    subgraph DISK["DISK"]
+        Store[("Parquet event store<br/>compressed, partitioned telemetry")]
+        Results[("Results<br/>incident and run JSON")]
+    end
+
+    subgraph SERVE["SERVE"]
+        Monitor["Run monitor<br/>status · progress · quality"]
+        API["FastAPI<br/>runs · incidents · graph · reports"]
+        Evaluate["Evaluation<br/>scenario ground truth + scorecards"]
+    end
+
+    subgraph ANALYST["ANALYST"]
+        UI["React + TypeScript analyst console<br/>Overview · Incidents · Attack paths · Fixes"]
+    end
+
+    Logs --> Ingest
+    Rules --> Detect
+    Config --> Correlate
+    Ingest -->|writes| Store
+    Store -->|SQL scans| Detect
+    Store --> Graph
+    Enrich --> Results
+    Monitor --> API
+    Results --> API
+    API --> Evaluate
+    API -->|JSON + live stream| UI
 ```
+
+### Architecture layers
+
+| Layer | Responsibility |
+| --- | --- |
+| Inputs | Accept raw telemetry, Sigma/YAML rules, and asset/link configuration. |
+| Engine | Stream and normalize events, detect and label activity, correlate entities, build paths, and enrich incidents. |
+| Disk | Keep compressed Parquet telemetry and one structured result file per incident/run. |
+| Serve | Expose run monitoring, FastAPI endpoints, evidence lookup, and independent evaluation. |
+| Analyst | Present the Overview, Incidents, Attack paths, Fixes, Accuracy, Rules, Live demo, and Performance workflows. |
 
 ### Core components
 
