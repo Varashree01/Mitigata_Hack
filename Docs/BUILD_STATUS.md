@@ -33,3 +33,9 @@
 - Frontend Vite & TypeScript Build: **0 errors, built in 676ms**
 - Live Simulation WebSocket: **Verified**
 - Evaluation Ground-Truth Benchmark: **Recall 100%, Precision 100%, False Alarms 0%**
+## UI/UX redesign update
+
+- Replaced the generic starter/global CSS tokens with the TRACX green, sage, cream, and olive design system.
+- Updated the persistent sidebar to use a dark operational rail with accessible active and hover states.
+- Preserved existing API-backed views and navigation routes.
+- Added `UI_UX_AUDIT.md` documenting the current frontend surface and remaining work.

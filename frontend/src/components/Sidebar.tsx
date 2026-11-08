@@ -122,7 +122,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               fontWeight: 700,
               fontSize: '17px',
               letterSpacing: '-0.02em',
-              color: 'var(--text-primary)',
+              color: '#f5e4cc',
               lineHeight: 1.2,
             }}>
               Tracx
@@ -155,7 +155,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div style={{
                 fontSize: 'var(--font-size-metadata)',
                 fontWeight: 600,
-                color: 'var(--text-subtle)',
+                color: '#a39778',
                 letterSpacing: '0.05em',
                 padding: 'var(--space-1) var(--space-3)',
                 textTransform: 'uppercase',
@@ -180,8 +180,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                       justifyContent: collapsed ? 'center' : 'space-between',
                       padding: collapsed ? '0' : '0 var(--space-3)',
                       borderRadius: 'var(--radius-sm)',
-                      backgroundColor: isActive ? 'var(--accent-subtle)' : 'transparent',
-                      color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
+                      backgroundColor: isActive ? 'rgba(99, 159, 92, 0.18)' : 'transparent',
+                      color: isActive ? '#b9dcae' : '#d8cfb3',
                       border: 'none',
                       cursor: 'pointer',
                       fontSize: 'var(--font-size-sidebar-nav)',
@@ -193,13 +193,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     onMouseEnter={(e) => {
                       if (!isActive) {
                         e.currentTarget.style.backgroundColor = 'var(--surface-hover)';
-                        e.currentTarget.style.color = 'var(--text-primary)';
+                        e.currentTarget.style.color = '#f5e4cc';
                       }
                     }}
                     onMouseLeave={(e) => {
                       if (!isActive) {
                         e.currentTarget.style.backgroundColor = 'transparent';
-                        e.currentTarget.style.color = 'var(--text-secondary)';
+                        e.currentTarget.style.color = '#d8cfb3';
                       }
                     }}
                   >
@@ -253,7 +253,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         justifyContent: collapsed ? 'center' : 'space-between',
       }}>
         {!collapsed && (
-          <span style={{ fontSize: 'var(--font-size-metadata)', color: 'var(--text-muted)' }}>
+          <span style={{ fontSize: 'var(--font-size-metadata)', color: '#a39778' }}>
             v1.0.0 · Core 15GB
           </span>
         )}
@@ -264,7 +264,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             background: 'none',
             border: '1px solid var(--border)',
             borderRadius: 'var(--radius-xs)',
-            color: 'var(--text-muted)',
+            color: '#a39778',
             cursor: 'pointer',
             padding: '4px',
             display: 'flex',
