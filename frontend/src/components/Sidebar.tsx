@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   LayoutDashboard, Radio, GitBranch, ShieldAlert, Crosshair,
-  Database, Radar, CheckSquare, FileText, Cpu, Settings,
+  Radar, CheckSquare, Cpu,
   ChevronLeft, ChevronRight, Shield
 } from 'lucide-react';
 
@@ -58,20 +58,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       groupName: 'DATA',
       items: [
         { id: 'livestream', label: 'Live demo', icon: Radio },
-        { id: 'ingestion', label: 'Data logs', icon: Database },
         { id: 'telemetry', label: 'Performance', icon: Radar },
-      ],
-    },
-    {
-      groupName: 'ANALYSIS',
-      items: [
-        { id: 'reports', label: 'Reports', icon: FileText },
-      ],
-    },
-    {
-      groupName: 'SYSTEM',
-      items: [
-        { id: 'settings', label: 'Settings', icon: Settings },
       ],
     },
   ];
