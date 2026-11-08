@@ -18,7 +18,7 @@ export const CommandCenter: React.FC<CommandCenterProps> = ({
     padding: 'var(--space-8)',
     background: 'var(--app-bg)',
   }}>
-    <div style={{ maxWidth: '920px', margin: '0 auto' }}>
+    <div style={{ width: '100%' }}>
       <div style={{ marginBottom: 'var(--space-8)' }}>
         <div className="metadata-text" style={{
           color: 'var(--accent)',
