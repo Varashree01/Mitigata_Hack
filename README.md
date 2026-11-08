@@ -26,12 +26,10 @@ The current frontend keeps the analyst workflow compact: start with a generated 
   <tr>
     <td><img src="Docs/tracx-overview.png" alt="Tracx Overview with live demo and log analysis actions"></td>
     <td><img src="Docs/tracx-incidents.png" alt="Tracx incident investigation view"></td>
-    <td><img src="Docs/tracx-attack-paths.png" alt="Tracx attack paths view"></td>
   </tr>
   <tr>
     <td align="center"><strong>Overview</strong></td>
-    <td align="center"><strong>Incidents</strong></td>
-    <td align="center"><strong>Attack paths</strong></td>
+    <td align="center"><strong>Incidents / Attack paths</strong></td>
   </tr>
 </table>
 
@@ -44,6 +42,8 @@ The current frontend keeps the analyst workflow compact: start with a generated 
 - **Built for scale:** chunked ingestion and DuckDB/Parquet storage support the project's 15 GB, 30 GB, and 50 GB evaluation tiers.
 
 ## Architecture
+
+![Tracx architecture](Docs/tracx-architecture.png)
 
 ```mermaid
 flowchart TB
