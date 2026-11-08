@@ -45,51 +45,6 @@ The current frontend keeps the analyst workflow compact: start with a generated 
 
 ![Tracx architecture](Docs/tracx-architecture.png)
 
-```mermaid
-flowchart TB
-    subgraph INPUTS["INPUTS"]
-        Logs["Raw log files<br/>CSV · JSON · JSONL · Sysmon"]
-        Rules["Rules (YAML)<br/>Sigma + ATT&CK mapping"]
-        Config["Config<br/>assets · links · fields"]
-    end
-
-    subgraph ENGINE["ENGINE · own process"]
-        Ingest["01 Ingest<br/>streaming parse · normalize · quality checks"]
-        Detect["02 Detect + label<br/>YAML rules → detections + signals"]
-        Correlate["03 Correlate<br/>typed entity links · temporal windows"]
-        Graph["04 Graph<br/>attack paths · reachability · chokepoints"]
-        Enrich["05 Enrich<br/>risk score · incident report"]
-        Ingest -->|events| Detect -->|alerts| Correlate -->|incidents| Graph -->|paths| Enrich
-    end
-
-    subgraph DISK["DISK"]
-        Store[("Parquet event store<br/>compressed, partitioned telemetry")]
-        Results[("Results<br/>incident and run JSON")]
-    end
-
-    subgraph SERVE["SERVE"]
-        Monitor["Run monitor<br/>status · progress · quality"]
-        API["FastAPI<br/>runs · incidents · graph · reports"]
-        Evaluate["Evaluation<br/>scenario ground truth + scorecards"]
-    end
-
-    subgraph ANALYST["ANALYST"]
-        UI["React + TypeScript analyst console<br/>Overview · Incidents · Attack paths · Fixes"]
-    end
-
-    Logs --> Ingest
-    Rules --> Detect
-    Config --> Correlate
-    Ingest -->|writes| Store
-    Store -->|SQL scans| Detect
-    Store --> Graph
-    Enrich --> Results
-    Monitor --> API
-    Results --> API
-    API --> Evaluate
-    API -->|JSON + live stream| UI
-```
-
 ### Architecture layers
 
 | Layer | Responsibility |
